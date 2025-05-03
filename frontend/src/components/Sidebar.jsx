@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import UserMenu from "./UserMenu";
 import {
   HomeIcon,
   ArchiveBoxIcon,
@@ -45,7 +46,10 @@ export default function Sidebar({ open, onToggle }) {
           </Link>
         ))}
       </nav>
-      <div className="p-4 border-t border-blue-100 text-xs text-gray-400">v1.0</div>
+      <div className="mt-auto flex flex-col gap-2 p-4 border-t border-blue-100">
+        <UserMenu />
+        <div className="text-xs text-gray-400 mt-2">v1.0</div>
+      </div>
     </aside>
   );
 }
