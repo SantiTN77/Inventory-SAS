@@ -25,7 +25,7 @@ Para mantenernos organizados y productivos, seguiremos las siguientes pautas:
 
 Utilizaremos **GitHub Projects** para gestionar nuestras tareas y el progreso del desarrollo.
 
-* **Visualización:** Pueden acceder al tablero del proyecto aquí: **[Enlace a tu Tablero de GitHub Projects]** (👈 ¡No olvides reemplazar esto con el enlace real!)
+* **Visualización:** Pueden acceder al tablero del proyecto aquí: **https://github.com/users/SantiTN77/projects/1**
 * **Asignaciones:** Por favor, estén pendientes de las tareas que se les asignen en el tablero.
 * **Actualización:** Es responsabilidad de cada uno mantener el estado de sus tareas actualizado (To Do, In Progress, Done).
 
