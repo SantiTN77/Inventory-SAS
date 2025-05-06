@@ -41,16 +41,16 @@ export default function UserMenu() {
       </button>
       {open && (
         <div className="absolute left-0 bottom-12 w-48 bg-white shadow-xl rounded-xl border border-blue-100 py-2 animate-fade-in z-50">
-          <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0}>
+          <a href="/perfil" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0}>
             <UserCircleIcon className="w-5 h-5" /> Perfil
-          </button>
-          <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0}>
+          </a>
+          <a href="/configuracion" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0}>
             <Cog6ToothIcon className="w-5 h-5" /> Configuración
-          </button>
+          </a>
           <div className="border-t my-1 border-blue-100" />
-          <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition" tabIndex={0}>
+          <a href="/login" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition" tabIndex={0}>
             <ArrowRightOnRectangleIcon className="w-5 h-5" /> Cerrar sesión
-          </button>
+          </a>
         </div>
       )}
     </div>
