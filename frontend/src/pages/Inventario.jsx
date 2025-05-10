@@ -37,8 +37,8 @@ export default function Inventario() {
   const hideTooltip = () => setTooltip({ ...tooltip, show: false });
 
   return (
-    <section className="min-h-[80vh] flex flex-col items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 animate-fade-in py-10">
-      <div className="w-full max-w-4xl bg-white/90 backdrop-blur-md rounded-3xl shadow-soft p-8 border border-primary-100"></div>
+    <section className="min-h-[80vh] flex flex-col items-center justify-center bg-gradient-to-br from-primary-100 via-blue-100 to-gray-100 animate-fade-in py-10">
+      <div className="w-full max-w-4xl bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8 border border-blue-100"></div>
       <Notification open={notif.open} message={notif.message} type={notif.type} onClose={() => setNotif({ ...notif, open: false })} />
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Nuevo producto">
         <form className="flex flex-col gap-4" onSubmit={e => { e.preventDefault(); handleSave(); }}>

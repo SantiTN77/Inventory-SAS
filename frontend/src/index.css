@@ -15,5 +15,5 @@
 
 body {
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'sans-serif';
-  background: linear-gradient(120deg, #e3f0ff 0%, #fff7e6 100%);
+  background: linear-gradient(135deg, #f0f6ff 0%, #fffbe6 100%) fixed;
 }

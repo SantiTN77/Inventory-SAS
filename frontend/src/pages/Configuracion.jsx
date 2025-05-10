@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Configuracion() {
   return (
-    <section className="min-h-[80vh] flex flex-col items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 animate-fade-in py-10">
+    <section className="min-h-[80vh] flex flex-col items-center justify-center bg-gradient-to-br from-primary-100 via-blue-100 to-gray-100 animate-fade-in py-10">
       <div className="w-full max-w-2xl bg-white/90 backdrop-blur-md rounded-3xl shadow-soft p-8 border border-primary-100">
         <h1 className="text-4xl font-display font-bold text-primary-600 mb-6 drop-shadow">Configuración</h1>
         <p className="mb-4 text-lg text-primary-700">Personaliza las preferencias de tu sistema, notificaciones y más.</p>

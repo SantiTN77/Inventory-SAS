@@ -36,7 +36,7 @@ export default function Roles() {
   const hideTooltip = () => setTooltip({ ...tooltip, show: false });
 
   return (
-    <section className="p-6 animate-fade-in">
+    <section className="p-6 animate-fade-in bg-gradient-to-br from-accent-100 via-orange-100 to-gray-100 min-h-[80vh] flex flex-col items-center justify-center">
       <Notification open={notif.open} message={notif.message} type={notif.type} onClose={() => setNotif({ ...notif, open: false })} />
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Nuevo usuario">
         <form className="flex flex-col gap-4" onSubmit={e => { e.preventDefault(); handleSave(); }}>
