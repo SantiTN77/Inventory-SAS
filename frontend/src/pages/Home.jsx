@@ -1,28 +1,57 @@
 
+
 import { useNavigate } from "react-router-dom";
+import DashboardCharts from "../components/DashboardCharts";
+
+
 
 export default function Home() {
   const navigate = useNavigate();
+  // Propuesta inicial de métricas (simuladas)
+  const metrics = [
+    {
+      label: "Ventas del día",
+      value: "$1,250.00",
+      icon: (
+        <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      ),
+      color: "from-green-400 to-green-500 via-green-400 to-green-500"
+    },
+    {
+      label: "Productos bajos en stock",
+      value: "3",
+      icon: (
+        <svg className="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 0V4m0 7v7m-7-7a9 9 0 1118 0 9 9 0 01-18 0z" /></svg>
+      ),
+      color: "from-yellow-400 to-yellow-500 via-yellow-400 to-yellow-500"
+    },
+    {
+      label: "Usuarios activos",
+      value: "5",
+      icon: (
+        <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+      ),
+      color: "from-blue-400 to-blue-500 via-blue-400 to-blue-500"
+    }
+  ];
+
   return (
     <section className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
-      <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-3xl shadow-xl p-10 flex flex-col items-center gap-4 border border-blue-200">
-        <h1 className="text-5xl font-extrabold text-blue-700 mb-2 drop-shadow">Punto SAS</h1>
-        <p className="text-xl text-gray-700 mb-1 font-medium">Sistema de administración de negocio</p>
-        <p className="text-gray-500 mb-4">Contabilidad, inventario, roles y más.</p>
-        <div className="flex gap-4 mt-2">
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition"
-            onClick={() => navigate("/tutorial")}
-          >
-            ¡Comienza ahora!
-          </button>
-        </div>
+      {/* Aviso de bienvenida eliminado para enfoque directo en métricas y dashboard */}
+      {/* Cards de métricas */}
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-5xl px-2">
+        {metrics.map((m, i) => (
+          <div key={i} className={`bg-gradient-to-br ${m.color} rounded-2xl shadow-2xl p-8 flex items-center gap-6 min-w-[240px] border border-gray-200 hover:scale-105 transition-transform duration-300`}> 
+            <div className="flex-shrink-0">{m.icon}</div>
+            <div>
+              <div className="text-3xl font-extrabold text-white drop-shadow-lg mb-1">{m.value}</div>
+              <div className="text-white/90 text-base font-semibold tracking-wide uppercase">{m.label}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="mt-10 flex flex-wrap gap-6 justify-center">
-        <FeatureCard title="Inventario" desc="Controla productos y stock" color="from-blue-400 to-blue-600" onClick={() => navigate("/inventario")}/>
-        <FeatureCard title="Contabilidad" desc="Gestiona cuentas y movimientos" color="from-green-400 to-green-600" onClick={() => navigate("/contabilidad")}/>
-        <FeatureCard title="Roles" desc="Administra usuarios y permisos" color="from-yellow-400 to-yellow-600" onClick={() => navigate("/roles")}/>
-      </div>
+      {/* Gráficas del dashboard */}
+      <DashboardCharts />
     </section>
   );
 }
@@ -30,12 +59,12 @@ export default function Home() {
 function FeatureCard({ title, desc, color, onClick }) {
   return (
     <button
-      className={`w-60 h-32 bg-gradient-to-br ${color} rounded-xl shadow-lg flex flex-col justify-center items-center text-white hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400`}
+      className={`w-64 h-36 bg-gradient-to-br ${color} rounded-2xl shadow-soft flex flex-col justify-center items-center text-white hover:scale-105 hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-300 group`}
       onClick={onClick}
       title={`Ir a ${title}`}
     >
-      <span className="text-2xl font-bold mb-1 drop-shadow">{title}</span>
-      <span className="text-md opacity-90">{desc}</span>
+      <span className="text-3xl font-display font-bold mb-2 drop-shadow group-hover:scale-110 transition-transform duration-300">{title}</span>
+      <span className="text-lg opacity-90 font-medium">{desc}</span>
     </button>
   );
 }
