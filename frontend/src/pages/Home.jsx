@@ -1,29 +1,57 @@
 
+
 import { useNavigate } from "react-router-dom";
+import DashboardCharts from "../components/DashboardCharts";
+
 
 
 export default function Home() {
   const navigate = useNavigate();
+  // Propuesta inicial de métricas (simuladas)
+  const metrics = [
+    {
+      label: "Ventas del día",
+      value: "$1,250.00",
+      icon: (
+        <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      ),
+      color: "from-green-400 to-green-600"
+    },
+    {
+      label: "Productos bajos en stock",
+      value: "3",
+      icon: (
+        <svg className="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 0V4m0 7v7m-7-7a9 9 0 1118 0 9 9 0 01-18 0z" /></svg>
+      ),
+      color: "from-yellow-300 to-yellow-500"
+    },
+    {
+      label: "Usuarios activos",
+      value: "5",
+      icon: (
+        <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+      ),
+      color: "from-blue-300 to-blue-500"
+    }
+  ];
+
   return (
     <section className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
-      <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-soft p-12 flex flex-col items-center gap-6 border border-primary-100 transition-all duration-500">
-        <h1 className="text-6xl font-display font-extrabold text-primary-500 mb-2 drop-shadow-lg tracking-tight transition-all duration-500">Punto SAS</h1>
-        <p className="text-2xl text-primary-700 mb-1 font-semibold">Sistema de administración de negocio</p>
-        <p className="text-primary-400 mb-4">Contabilidad, inventario, roles y más.</p>
-        <div className="flex gap-4 mt-2">
-          <button
-            className="bg-primary-500 text-white px-6 py-3 rounded-xl shadow-lg hover:bg-primary-600 hover:scale-105 transition-all duration-300 font-semibold text-lg"
-            onClick={() => navigate("/tutorial")}
-          >
-            ¡Comienza ahora!
-          </button>
-        </div>
+      {/* Aviso de bienvenida eliminado para enfoque directo en métricas y dashboard */}
+      {/* Cards de métricas */}
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl px-2">
+        {metrics.map((m, i) => (
+          <div key={i} className={`bg-gradient-to-br ${m.color} rounded-2xl shadow-lg p-6 flex items-center gap-4 min-w-[220px]`}> 
+            <div className="flex-shrink-0">{m.icon}</div>
+            <div>
+              <div className="text-2xl font-bold text-white drop-shadow">{m.value}</div>
+              <div className="text-white/90 text-sm font-medium">{m.label}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="mt-12 flex flex-wrap gap-8 justify-center">
-        <FeatureCard title="Inventario" desc="Controla productos y stock" color="from-primary-400 to-primary-600" onClick={() => navigate("/inventario")}/>
-        <FeatureCard title="Contabilidad" desc="Gestiona cuentas y movimientos" color="from-success-500 to-green-700" onClick={() => navigate("/contabilidad")}/>
-        <FeatureCard title="Roles" desc="Administra usuarios y permisos" color="from-accent-400 to-accent-500" onClick={() => navigate("/roles")}/>
-      </div>
+      {/* Gráficas del dashboard */}
+      <DashboardCharts />
     </section>
   );
 }
