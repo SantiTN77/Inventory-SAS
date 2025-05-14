@@ -8,11 +8,17 @@ const authRoutes = require('./auth');
 const protectedRoutes = require('./protected');
 const productRoutes = require('./product');
 const categoryRoutes = require('./category');
+const providerRoutes = require('./provider');
+const movementRoutes = require('./movement');
+const reportRoutes = require('./report');
 router.use('/example', exampleRoutes);
 router.use('/auth', authRoutes);
 router.use('/api/protegido', protectedRoutes);
 router.use('/api/productos', productRoutes);
 router.use('/api/categorias', categoryRoutes);
+router.use('/api/proveedores', providerRoutes);
+router.use('/api/movimientos', movementRoutes);
+router.use('/api/reportes', reportRoutes);
 
 // Ruta raíz
 router.get('/', (req, res) => {
