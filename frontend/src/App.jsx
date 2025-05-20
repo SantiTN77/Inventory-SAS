@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Inventario from "./pages/Inventario";
+import Categorias from "./pages/Categorias";
 import Contabilidad from "./pages/Contabilidad";
 import Roles from "./pages/Roles";
 import Tutorial from "./pages/Tutorial";
@@ -44,6 +45,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/tutorial" element={<Tutorial />} />
               <Route path="/inventario" element={<Inventario />} />
+              <Route path="/categorias" element={<Categorias />} />
               <Route path="/contabilidad" element={<Contabilidad />} />
               <Route path="/roles" element={<Roles />} />
               <Route path="/estadisticas" element={<Estadisticas />} />
