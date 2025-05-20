@@ -24,6 +24,7 @@ import {
 const mainLinks = [
   { to: "/", label: "Inicio", icon: HomeIcon },
   { to: "/inventario", label: "Inventario", icon: ArchiveBoxIcon },
+  { to: "/categorias", label: "Categorías", icon: ArchiveBoxIcon },
   { to: "/contabilidad", label: "Contabilidad", icon: BanknotesIcon },
   { to: "/roles", label: "Roles", icon: UserGroupIcon },
 ];
