@@ -7,14 +7,28 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica de autenticación simulada
-    if (email === "demo@email.com" && password === "demo123") {
-      setError("");
-      navigate("/");
-    } else {
-      setError("Credenciales incorrectas. Intenta de nuevo.");
+    setError("");
+    try {
+      const res = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Credenciales incorrectas. Intenta de nuevo.");
+      }
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else {
+        throw new Error("Respuesta inválida del servidor");
+      }
+    } catch (err) {
+      setError(err.message || "Error de autenticación");
     }
   };
 

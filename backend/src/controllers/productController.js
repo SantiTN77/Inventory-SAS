@@ -2,7 +2,7 @@ let products = require('../models/product');
 
 // Obtener todos los productos
 exports.getAll = (req, res) => {
-  res.json(products);
+  res.json({ products });
 };
 
 // Obtener un producto por ID
@@ -26,7 +26,7 @@ exports.create = (req, res) => {
     precio
   };
   products.push(newProduct);
-  res.status(201).json(newProduct);
+  res.status(201).json({ product: newProduct, products });
 };
 
 // Actualizar un producto
@@ -38,7 +38,7 @@ exports.update = (req, res) => {
   if (nombre !== undefined) product.nombre = nombre;
   if (stock !== undefined) product.stock = stock;
   if (precio !== undefined) product.precio = precio;
-  res.json(product);
+  res.json({ product, products });
 };
 
 // Eliminar un producto
@@ -47,5 +47,5 @@ exports.remove = (req, res) => {
   const index = products.findIndex(p => p.id === id);
   if (index === -1) return res.status(404).json({ message: 'Producto no encontrado' });
   const deleted = products.splice(index, 1);
-  res.json({ message: 'Producto eliminado', producto: deleted[0] });
+  res.json({ message: 'Producto eliminado', producto: deleted[0], products });
 };
