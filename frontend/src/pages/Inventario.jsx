@@ -1,5 +1,6 @@
 
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArchiveBoxIcon, PlusIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
 import Notification from "../components/Notification";
@@ -10,6 +11,7 @@ function getToken() {
 }
 
 export default function Inventario() {
+  const navigate = useNavigate();
   // Estado para el formulario de producto
   const [form, setForm] = useState({ nombre: '', stock: '', precio: '' });
   const [editId, setEditId] = useState(null); // id del producto a editar
@@ -30,7 +32,15 @@ export default function Inventario() {
           precio: Number(form.precio),
         }),
       });
-      if (!res.ok) throw new Error('Error al crear producto');
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Error al crear producto');
+      }
       setNotif({ open: true, message: 'Producto agregado con éxito', type: 'success' });
       setModalOpen(false);
       setForm({ nombre: '', stock: '', precio: '' });
@@ -56,7 +66,15 @@ export default function Inventario() {
           precio: Number(form.precio),
         }),
       });
-      if (!res.ok) throw new Error('Error al editar producto');
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Error al editar producto');
+      }
       setNotif({ open: true, message: 'Producto editado', type: 'success' });
       setEditOpen(false);
       setForm({ nombre: '', stock: '', precio: '' });
@@ -81,7 +99,15 @@ export default function Inventario() {
           'Authorization': `Bearer ${token}`,
         },
       });
-      if (!res.ok) throw new Error('Error al eliminar producto');
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Error al eliminar producto');
+      }
       setNotif({ open: true, message: 'Producto eliminado', type: 'success' });
       setConfirmOpen(false);
       setDeleteId(null);
@@ -113,7 +139,15 @@ export default function Inventario() {
           "Authorization": `Bearer ${token}`,
         },
       });
-      if (!res.ok) throw new Error("Error al obtener productos");
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Error al obtener productos");
+      }
       const data = await res.json();
       // Acepta tanto array plano como { products: [...] }
       setProductos(Array.isArray(data) ? data : data.products || []);
