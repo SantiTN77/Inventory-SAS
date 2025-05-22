@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { PlusIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
 import Notification from "../components/Notification";
@@ -8,6 +9,7 @@ function getToken() {
 }
 
 export default function Categorias() {
+  const navigate = useNavigate();
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -29,7 +31,15 @@ export default function Categorias() {
       const res = await fetch("/api/categorias", {
         headers: { "Authorization": `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("Error al obtener categorías");
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Error al obtener categorías");
+      }
       const data = await res.json();
       setCategorias(Array.isArray(data) ? data : data.categorias || data.categories || []);
     } catch (err) {
@@ -55,7 +65,15 @@ export default function Categorias() {
         },
         body: JSON.stringify({ nombre: form.nombre }),
       });
-      if (!res.ok) throw new Error("Error al crear categoría");
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Error al crear categoría");
+      }
       setNotif({ open: true, message: "Categoría guardada", type: "success" });
       setModalOpen(false);
       setForm({ nombre: "" });
@@ -75,7 +93,15 @@ export default function Categorias() {
         },
         body: JSON.stringify({ nombre: form.nombre }),
       });
-      if (!res.ok) throw new Error("Error al editar categoría");
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Error al editar categoría");
+      }
       setNotif({ open: true, message: "Categoría editada", type: "success" });
       setEditOpen(false);
       setForm({ nombre: "" });
@@ -92,7 +118,15 @@ export default function Categorias() {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("Error al eliminar categoría");
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('token');
+          navigate('/login');
+          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+        }
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Error al eliminar categoría");
+      }
       setNotif({ open: true, message: "Categoría eliminada", type: "success" });
       setConfirmOpen(false);
       setDeleteId(null);

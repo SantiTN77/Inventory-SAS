@@ -1,3 +1,8 @@
+## Notas sobre Roles y Seguridad (20/05/2025)
+
+- El módulo de Roles actualmente no tiene lógica real de API ni protección JWT.
+- Cuando se implemente el CRUD real de roles/usuarios, se debe proteger con JWT y aplicar el mismo patrón de manejo de sesión y feedback de errores que en los otros módulos.
+- Esto incluye: redirección automática a login si el token es inválido/expirado, y mostrar mensajes claros de error de la API.
 # Prompt de Contexto para Inventory POS (Uso con GitHub Copilot)
 
 ## Descripción General

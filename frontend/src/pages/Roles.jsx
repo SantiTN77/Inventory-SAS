@@ -1,3 +1,7 @@
+// NOTA: Cuando se implemente el CRUD real de roles y usuarios:
+// - Proteger los endpoints en backend con JWT.
+// - Aplicar el patrón de manejo de sesión y feedback de errores como en Inventario, Categorías y Contabilidad.
+// - Redirigir a login si el token es inválido o expiró.
 import { useState, useRef } from "react";
 import { UserGroupIcon, PlusIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
