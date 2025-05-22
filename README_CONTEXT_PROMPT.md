@@ -26,11 +26,26 @@ Inventory POS es un sistema profesional de Punto de Venta (POS) orientado a pequ
 - Frontend avanzado y coherente, siguiendo buenas prácticas de diseño y colaboración.
 
 ## Reglas para futuros agentes/copilots
+- El frontend debe implementar un patrón uniforme de manejo de errores y feedback de la API en todas las páginas:
+  - Usar el estado `notif` y el componente `Notification` para mostrar mensajes de éxito, error o información.
+  - Ante errores de autenticación (401/403), limpiar el token y redirigir a login.
+  - Mostrar mensajes claros y amigables al usuario, tanto para errores de validación como de backend.
+  - Todas las páginas deben tener preparado el patrón, aunque aún no consuman la API, para facilitar futuras integraciones.
+  - Ejemplo de uso:
+    ```js
+    const [notif, setNotif] = useState({ open: false, message: "", type: "info" });
+    <Notification open={notif.open} message={notif.message} type={notif.type} onClose={() => setNotif({ ...notif, open: false })} />
+    // Para mostrar feedback:
+    setNotif({ open: true, message: "Mensaje", type: "success" });
+    ```
+
 - Leer este archivo antes de continuar el desarrollo.
 - Mantener el mismo estándar de calidad y flujo de trabajo.
 - Seguir la lista de issues y prioridades establecidas por el usuario.
 - Consultar siempre antes de hacer cambios estructurales o de diseño.
 - Documentar todo avance relevante en este archivo para futuras sesiones.
+- El flujo para cerrar issues es: (1) El usuario crea la rama para el issue, (2) el agente realiza los cambios y pruebas, (3) el agente hace push, crea el pull request y lo mergea tras aprobación, (4) el agente elimina la rama remota y local, (5) se documenta el cierre en este archivo.
+- El agente debe registrar en este archivo cualquier preferencia o flujo de trabajo que el usuario indique durante el desarrollo, para futuras interacciones.
 
 ---
 Este prompt debe ser usado como contexto inicial si se reinicia el chat o se cambia de agente, para garantizar continuidad y coherencia en el desarrollo del proyecto.

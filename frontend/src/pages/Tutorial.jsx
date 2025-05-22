@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import Notification from "../components/Notification";
 
 export default function Tutorial() {
+  // Patrón de feedback preparado para futuras llamadas a la API
+  const [notif, setNotif] = useState({ open: false, message: "", type: "info" });
   return (
     <div className="max-w-4xl mx-auto py-10 px-4 animate-fade-in">
+      <Notification open={notif.open} message={notif.message} type={notif.type} onClose={() => setNotif({ ...notif, open: false })} />
       <h1 className="text-3xl font-bold text-blue-700 mb-6">Bienvenido al Tutorial de Punto SAS</h1>
       <p className="mb-4 text-lg text-gray-700">Esta sección te guiará paso a paso para que puedas aprovechar al máximo nuestro sistema POS e inventario. Aquí encontrarás instrucciones, videos y artículos útiles para comenzar.</p>
       <section className="mb-8">
@@ -30,6 +34,7 @@ export default function Tutorial() {
         <h2 className="text-2xl font-semibold text-blue-600 mb-2">4. Soporte y Ayuda</h2>
         <p className="text-gray-700">¿Tienes dudas? Contáctanos o revisa la sección de preguntas frecuentes.</p>
       </section>
+      {/* Usar setNotif({open:true, message:'Mensaje', type:'error'|'success'}) para mostrar feedback */}
     </div>
   );
 }
