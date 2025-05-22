@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ArchiveBoxIcon, PlusIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
 import Notification from "../components/Notification";
+import { getApiUrl } from "../utils/api";
 
 // Utilidad para obtener el token JWT desde localStorage
 function getToken() {
@@ -20,7 +21,7 @@ export default function Inventario() {
   const handleSave = async () => {
     try {
       const token = getToken();
-      const res = await fetch('/api/productos', {
+      const res = await fetch(`${getApiUrl()}/api/productos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ export default function Inventario() {
   const handleEdit = async () => {
     try {
       const token = getToken();
-      const res = await fetch(`/api/productos/${editId}`, {
+      const res = await fetch(`${getApiUrl()}/api/productos/${editId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ export default function Inventario() {
   const handleDelete = async () => {
     try {
       const token = getToken();
-      const res = await fetch(`/api/productos/${deleteId}`, {
+      const res = await fetch(`${getApiUrl()}/api/productos/${deleteId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -134,7 +135,7 @@ export default function Inventario() {
     setError("");
     try {
       const token = getToken();
-      const res = await fetch("/api/productos", {
+      const res = await fetch(`${getApiUrl()}/api/productos`, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },

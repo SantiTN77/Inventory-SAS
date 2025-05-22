@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PlusIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
 import Notification from "../components/Notification";
+import { getApiUrl } from "../utils/api";
 
 function getToken() {
   return localStorage.getItem("token");
@@ -28,7 +29,7 @@ export default function Categorias() {
     setError("");
     try {
       const token = getToken();
-      const res = await fetch("/api/categorias", {
+      const res = await fetch(`${getApiUrl()}/api/categorias`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!res.ok) {
@@ -57,7 +58,7 @@ export default function Categorias() {
   const handleSave = async () => {
     try {
       const token = getToken();
-      const res = await fetch("/api/categorias", {
+      const res = await fetch(`${getApiUrl()}/api/categorias`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +86,7 @@ export default function Categorias() {
   const handleEdit = async () => {
     try {
       const token = getToken();
-      const res = await fetch(`/api/categorias/${editId}`, {
+      const res = await fetch(`${getApiUrl()}/api/categorias/${editId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +115,7 @@ export default function Categorias() {
   const handleDelete = async () => {
     try {
       const token = getToken();
-      const res = await fetch(`/api/categorias/${deleteId}`, {
+      const res = await fetch(`${getApiUrl()}/api/categorias/${deleteId}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` },
       });

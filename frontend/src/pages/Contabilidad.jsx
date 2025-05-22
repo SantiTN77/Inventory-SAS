@@ -7,6 +7,7 @@ function getToken() {
 import { BanknotesIcon, PlusIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
 import Notification from "../components/Notification";
+import { getApiUrl } from "../utils/api";
 
 export default function Contabilidad() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function Contabilidad() {
     setError("");
     try {
       const token = getToken();
-      const res = await fetch("/api/movimientos", {
+      const res = await fetch(`${getApiUrl()}/api/movimientos`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!res.ok) {
@@ -63,7 +64,7 @@ export default function Contabilidad() {
   const handleSave = async () => {
     try {
       const token = getToken();
-      const res = await fetch('/api/movimientos', {
+      const res = await fetch(`${getApiUrl()}/api/movimientos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +98,7 @@ export default function Contabilidad() {
   const handleEdit = async () => {
     try {
       const token = getToken();
-      const res = await fetch(`/api/movimientos/${editId}`, {
+      const res = await fetch(`${getApiUrl()}/api/movimientos/${editId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ export default function Contabilidad() {
   const handleDelete = async () => {
     try {
       const token = getToken();
-      const res = await fetch(`/api/movimientos/${deleteId}`, {
+      const res = await fetch(`${getApiUrl()}/api/movimientos/${deleteId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
