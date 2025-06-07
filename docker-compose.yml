@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Añade otras variables aquí si las necesitas
+      # - DB_HOST=db
+      # - JWT_SECRET=mi_secreto
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=http://localhost:3000  # Punto clave!
+    depends_on:
+      - backend
+
+  # Si necesitas base de datos:
+  # db:
+  #   image: mongo:latest
+  #   volumes:
+  #     - mongodb_data:/data/db
+  #   ports:
+  #     - "27017:27017"
+
+# volumes:
+#   mongodb_data:
