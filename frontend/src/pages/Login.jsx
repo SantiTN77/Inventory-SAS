@@ -1,16 +1,17 @@
 import React, { useState } from "react";
+import Notification from "../components/Notification";
 import { useNavigate } from "react-router-dom";
 import { getApiUrl } from "../utils/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [notif, setNotif] = useState({ open: false, message: "", type: "info" });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setNotif({ open: false, message: "", type: "info" });
     try {
       const res = await fetch(`${getApiUrl()}/auth/login`, {
         method: "POST",
@@ -19,17 +20,19 @@ export default function Login() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || "Credenciales incorrectas. Intenta de nuevo.");
+        setNotif({ open: true, message: data.message || "Credenciales incorrectas. Intenta de nuevo.", type: "error" });
+        return;
       }
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("token", data.token);
-        navigate("/");
+        setNotif({ open: true, message: "¡Bienvenido!", type: "success" });
+        setTimeout(() => navigate("/"), 1000);
       } else {
-        throw new Error("Respuesta inválida del servidor");
+        setNotif({ open: true, message: "Respuesta inválida del servidor", type: "error" });
       }
     } catch (err) {
-      setError(err.message || "Error de autenticación");
+      setNotif({ open: true, message: err.message || "Error de autenticación", type: "error" });
     }
   };
 
@@ -54,7 +57,7 @@ export default function Login() {
           required
         />
         <button type="button" className="text-primary-500 hover:underline text-sm self-end mb-2 transition-all" onClick={() => alert('Funcionalidad próximamente disponible.')}>¿Olvidaste tu contraseña?</button>
-        {error && <div className="text-danger-500 text-sm text-center">{error}</div>}
+        <Notification open={notif.open} message={notif.message} type={notif.type} onClose={() => setNotif({ ...notif, open: false })} />
         <button type="submit" className="bg-primary-500 text-white px-6 py-3 rounded-xl hover:bg-primary-600 hover:scale-105 transition-all duration-300 font-semibold text-lg">Entrar</button>
         <div className="text-xs text-primary-300 text-center mt-2">Demo: demo@email.com / demo123</div>
       </form>

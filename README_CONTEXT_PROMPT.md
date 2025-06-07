@@ -18,14 +18,19 @@ Inventory POS es un sistema profesional de Punto de Venta (POS) orientado a pequ
 - Siempre se debe proteger la rama `main` y evitar pushes directos.
 - Se documentan los endpoints y el flujo de trabajo.
 
-## Cambios y Avances hasta la Fecha (13/05/2025)
+
+## Cambios y Avances hasta la Fecha (07/06/2025)
 - Estructura base del backend creada y modularizada.
 - Autenticación JWT implementada y probada (login y rutas protegidas).
-- CRUD de productos implementado y protegido, probado exitosamente desde Postman.
+- CRUD de productos, categorías y movimientos implementado y protegido, probado exitosamente desde frontend y Postman.
+- Feedback profesional y uniforme en frontend (Notification, manejo de errores, UX).
 - Flujo de trabajo profesional: ramas por issue, PR, merge y limpieza de ramas.
 - Frontend avanzado y coherente, siguiendo buenas prácticas de diseño y colaboración.
+- Se documenta que el módulo de Roles aún no está implementado por decisión estratégica, y será abordado con enfoque de seguridad y permisos avanzados.
+- Se adopta la visión de plataforma escalable y modular, con un plan empresarial como base y posibilidad de crear planes personalizados (básico, negocio, contable, etc.), donde los módulos y permisos se asignan según el plan y el rol del usuario.
 
 ## Reglas para futuros agentes/copilots
+
 - El frontend debe implementar un patrón uniforme de manejo de errores y feedback de la API en todas las páginas:
   - Usar el estado `notif` y el componente `Notification` para mostrar mensajes de éxito, error o información.
   - Ante errores de autenticación (401/403), limpiar el token y redirigir a login.
@@ -38,6 +43,16 @@ Inventory POS es un sistema profesional de Punto de Venta (POS) orientado a pequ
     // Para mostrar feedback:
     setNotif({ open: true, message: "Mensaje", type: "success" });
     ```
+
+## Buenas prácticas adicionales (actualización 07/06/2025)
+
+- Antes de hacer stage/commit/push, ejecutar pruebas automáticas o manuales rápidas sobre los endpoints principales del backend y flujos clave del frontend.
+- Documentar en este archivo cualquier preferencia profesional o flujo de trabajo nuevo que el usuario indique.
+- Mantener la estructura de carpetas limpia y evitar carpetas o archivos duplicados/confusos (por ejemplo, no debe haber carpetas `backend/backend`).
+- Los scripts de inicialización de base de datos deben cargar el archivo `.env` de forma robusta, usando rutas absolutas si es necesario.
+- El backend debe validar y mostrar errores claros en consola si faltan variables de entorno críticas.
+- El frontend debe consumir la API usando variables de entorno (`VITE_API_URL`) y centralizar la lógica de fetch en utilidades reutilizables.
+- Siempre probar el flujo completo (login, CRUD, feedback) tras cambios estructurales o de integración.
 
 - Leer este archivo antes de continuar el desarrollo.
 - Mantener el mismo estándar de calidad y flujo de trabajo.

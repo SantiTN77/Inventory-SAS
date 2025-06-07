@@ -1,4 +1,17 @@
+
 # Inventory POS - README para Desarrolladores 🧑‍💻👩‍💻
+
+## 🚀 Visión y Escalabilidad del Proyecto (Actualización 07/06/2025)
+
+Inventory POS está diseñado como una plataforma modular y escalable, capaz de adaptarse a diferentes tipos de clientes y planes comerciales:
+
+- **Plan Empresarial:** Incluye todos los módulos (inventario, roles, contabilidad, reportes, configuración, etc.) y sirve como base para el desarrollo y referencia de futuras versiones.
+- **Planes Personalizados (Básico, Negocio, Contable, etc.):** Se podrán crear versiones con módulos y permisos limitados según el plan contratado.
+- **Sistema de Roles y Permisos:** Cada usuario tendrá acceso solo a los módulos y funciones permitidas por su rol (admin, soporte, caja, solo lectura, etc.), garantizando seguridad y flexibilidad.
+- **Arquitectura Modular:** Los módulos pueden activarse/desactivarse fácilmente para cada plan o cliente.
+- **Preparado para SaaS:** La arquitectura permite escalar a un modelo multi-tenant en el futuro.
+
+Esta visión garantiza un producto robusto, seguro, moderno y adaptable a las necesidades del mercado.
 
 ¡Hola equipo! Este es el espacio central para nuestro proyecto **Inventory POS**. Aquí encontraremos la información esencial para colaborar eficientemente.
 
