@@ -1,7 +1,12 @@
-import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
+
 import { Link } from "react-router-dom";
+import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header({ onSidebarToggle }) {
+  const { user } = useAuth();
+  const inicial = user?.nombre ? user.nombre[0].toUpperCase() : 'U';
+  const rol = user?.rol?.nombre || 'Usuario';
   return (
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-blue-100 shadow-sm flex items-center justify-between px-6 py-3">
       <div className="flex items-center gap-3">
@@ -26,10 +31,12 @@ export default function Header({ onSidebarToggle }) {
           <Cog6ToothIcon className="h-6 w-6 text-blue-400 group-hover:text-blue-700 transition" />
         </Link>
         <Link to="/perfil" className="ml-2 flex items-center gap-2 group" title="Perfil">
-          <span className="bg-blue-200 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow-inner">A</span>
-          <span className="hidden md:block font-semibold text-blue-900 group-hover:text-blue-700 transition">Admin</span>
+          <span className="bg-blue-200 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow-inner">{inicial}</span>
+          <span className="hidden md:block font-semibold text-blue-900 group-hover:text-blue-700 transition">{user?.nombre || 'Usuario'}</span>
+          <span className="hidden md:block text-xs text-gray-400 leading-tight ml-2">{rol.charAt(0).toUpperCase() + rol.slice(1)}</span>
         </Link>
       </div>
     </header>
   );
 }
+

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import Notification from "../components/Notification";
 import { useNavigate } from "react-router-dom";
 import { getApiUrl } from "../utils/api";
@@ -8,6 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [notif, setNotif] = useState({ open: false, message: "", type: "info" });
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ export default function Login() {
       }
       const data = await res.json();
       if (data.token) {
-        localStorage.setItem("token", data.token);
+        login(data.token, data.user);
         setNotif({ open: true, message: "¡Bienvenido!", type: "success" });
         setTimeout(() => navigate("/"), 1000);
       } else {

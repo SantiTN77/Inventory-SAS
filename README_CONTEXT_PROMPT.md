@@ -1,3 +1,44 @@
+## Avance y problemas pendientes (08/06/2025)
+
+- Se implementó lógica de permisos por rol (admin, cajero).
+- El usuario admin funciona correctamente.
+- El usuario negocio (cajero) solo ve inventario, pero no contabilidad en el sidebar.
+- Al intentar acceder a contabilidad, recibe "Acceso denegado".
+- Al intentar acciones no permitidas en inventario, es redirigido al login (debe mostrar acceso denegado).
+- Hay más de 900 archivos pendientes por falta de .gitignore y control de versiones.
+- Próximo paso: limpiar archivos, mejorar lógica de sidebar y rutas protegidas, y documentar todo el flujo.
+
+## Avance (07/06/2025): Login real y pruebas de permisos
+
+- El login ahora utiliza el modelo de usuario real y bcryptjs, permitiendo autenticación segura con hash.
+- Se puede crear usuarios de prueba con rol y plan, y obtener JWT válidos para pruebas de permisos.
+- Todos los endpoints protegidos pueden ser probados con el token generado.
+- El flujo de autenticación y autorización es ahora profesional y listo para pruebas desde frontend y Postman.
+## Avance (07/06/2025): Protección de módulos con permisos avanzados
+
+- Todos los endpoints principales (productos, categorías, movimientos, proveedores, reportes) están protegidos con middleware de permisos según rol y plan.
+- El middleware valida el JWT, obtiene el usuario, su rol y plan, y verifica si tiene acceso al módulo y acción solicitada.
+- Si el usuario no tiene permiso, la API responde con 403 y un mensaje claro.
+- Este patrón es reutilizable y se debe aplicar a cualquier nuevo módulo o endpoint crítico.
+- El frontend debe mostrar feedback claro ante errores de permisos ("No tienes acceso a esta función").
+## Avance (07/06/2025): Protección de módulos con permisos avanzados
+
+- Todos los endpoints críticos de productos, categorías, movimientos, proveedores y reportes están protegidos con un middleware de permisos.
+- El middleware valida el JWT, el plan y el rol del usuario, y permite o deniega el acceso según los permisos configurados.
+- El patrón es reutilizable y escalable para cualquier nuevo módulo o función.
+- El feedback de errores de permisos es claro y consistente, tanto en backend como en frontend.
+## Arquitectura de permisos y protección de endpoints (actualización 07/06/2025)
+
+- El backend implementa un sistema de roles y planes referenciados en el modelo de usuario.
+- Cada rol define permisos por módulo y acción (crear, leer, editar, eliminar).
+- Cada plan define los módulos y beneficios disponibles según el nivel contratado (básico, negocio, contable, empresarial, etc.).
+- Se implementará un middleware de permisos que:
+  - Valida el JWT y obtiene el usuario, rol y plan.
+  - Verifica si el usuario tiene permiso para la acción y módulo solicitado, combinando los permisos de su rol y los módulos de su plan.
+  - Si no tiene permiso, responde con 403 y mensaje claro.
+- Todos los endpoints críticos (CRUD, reportes, configuración, etc.) deben protegerse con este middleware.
+- El frontend debe mostrar feedback claro ante errores de permisos ("No tienes acceso a esta función").
+- Esta arquitectura permite escalar y personalizar la plataforma para distintos clientes y necesidades, y facilita la creación de nuevos planes y roles en el futuro.
 ## Notas sobre Roles y Seguridad (20/05/2025)
 
 - El módulo de Roles actualmente no tiene lógica real de API ni protección JWT.
