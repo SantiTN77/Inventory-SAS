@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: require('path').resolve(__dirname, '..', '.env') });
 const express = require('express');
 const cors = require('cors');
 
@@ -10,7 +10,11 @@ app.use(express.json());
 // Conexión a MongoDB
 const mongoose = require('mongoose');
 const mongoUri = process.env.MONGODB_URI;
-mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
+if (!mongoUri || typeof mongoUri !== 'string') {
+  console.error('Error: MONGODB_URI no está definido. Revisa backend/.env');
+  process.exit(1);
+}
+mongoose.connect(mongoUri)
   .then(() => console.log('Conectado a MongoDB'))
   .catch((err) => {
     console.error('Error de conexión a MongoDB:', err.message);

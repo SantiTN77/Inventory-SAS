@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
@@ -30,10 +30,16 @@ function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { token, loading } = useAuth();
   const location = useLocation();
-  // Si está cargando el estado de auth, no renderizar nada
-  if (loading) return null;
+  const navigate = useNavigate();
   const isLoggedIn = !!token;
   const isLoginRoute = location.pathname === "/login";
+  useEffect(() => {
+    if (!loading && !isLoggedIn && !isLoginRoute) {
+      navigate('/login', { replace: true });
+    }
+  }, [loading, isLoggedIn, isLoginRoute, navigate]);
+  // Si está cargando el estado de auth, no renderizar nada
+  if (loading) return null;
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar y header solo si está logueado y no es login */}
