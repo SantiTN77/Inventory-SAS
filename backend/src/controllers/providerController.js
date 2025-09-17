@@ -1,49 +1,56 @@
-let providers = require('../models/provider');
+const Provider = require('../models/provider.mongo');
 
 // Obtener todos los proveedores
-exports.getAll = (req, res) => {
-  res.json(providers);
+exports.getAll = async (req, res) => {
+  try {
+    const list = await Provider.find().sort({ createdAt: -1 });
+    res.json(list);
+  } catch (e) {
+    res.status(500).json({ message: 'Error al obtener proveedores', error: e.message });
+  }
 };
 
 // Obtener un proveedor por ID
-exports.getById = (req, res) => {
-  const id = parseInt(req.params.id);
-  const provider = providers.find(p => p.id === id);
-  if (!provider) return res.status(404).json({ message: 'Proveedor no encontrado' });
-  res.json(provider);
+exports.getById = async (req, res) => {
+  try {
+    const provider = await Provider.findById(req.params.id);
+    if (!provider) return res.status(404).json({ message: 'Proveedor no encontrado' });
+    res.json(provider);
+  } catch (e) {
+    res.status(400).json({ message: 'ID inválido', error: e.message });
+  }
 };
 
 // Crear un nuevo proveedor
-exports.create = (req, res) => {
-  const { nombre, contacto } = req.body;
-  if (!nombre || !contacto) {
-    return res.status(400).json({ message: 'Faltan campos obligatorios' });
+exports.create = async (req, res) => {
+  try {
+    const { nombre, contacto } = req.body;
+    const p = await Provider.create({ nombre, contacto });
+    res.status(201).json(p);
+  } catch (e) {
+    res.status(400).json({ message: 'Error al crear proveedor', error: e.message });
   }
-  const newProvider = {
-    id: providers.length ? providers[providers.length - 1].id + 1 : 1,
-    nombre,
-    contacto
-  };
-  providers.push(newProvider);
-  res.status(201).json(newProvider);
 };
 
 // Actualizar un proveedor
-exports.update = (req, res) => {
-  const id = parseInt(req.params.id);
-  const { nombre, contacto } = req.body;
-  const provider = providers.find(p => p.id === id);
-  if (!provider) return res.status(404).json({ message: 'Proveedor no encontrado' });
-  if (nombre !== undefined) provider.nombre = nombre;
-  if (contacto !== undefined) provider.contacto = contacto;
-  res.json(provider);
+exports.update = async (req, res) => {
+  try {
+    const { nombre, contacto } = req.body;
+    const p = await Provider.findByIdAndUpdate(req.params.id, { nombre, contacto }, { new: true });
+    if (!p) return res.status(404).json({ message: 'Proveedor no encontrado' });
+    res.json(p);
+  } catch (e) {
+    res.status(400).json({ message: 'Error al actualizar proveedor', error: e.message });
+  }
 };
 
 // Eliminar un proveedor
-exports.remove = (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = providers.findIndex(p => p.id === id);
-  if (index === -1) return res.status(404).json({ message: 'Proveedor no encontrado' });
-  const deleted = providers.splice(index, 1);
-  res.json({ message: 'Proveedor eliminado', proveedor: deleted[0] });
+exports.remove = async (req, res) => {
+  try {
+    const deleted = await Provider.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Proveedor no encontrado' });
+    res.json({ message: 'Proveedor eliminado', proveedor: deleted });
+  } catch (e) {
+    res.status(400).json({ message: 'Error al eliminar proveedor', error: e.message });
+  }
 };

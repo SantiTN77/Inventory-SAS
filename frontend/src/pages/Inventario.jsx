@@ -295,8 +295,8 @@ export default function Inventario() {
                 {productos.length === 0 ? (
                   <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-500">No hay productos registrados.</td></tr>
                 ) : (
-                  productos.map((prod) => (
-                    <tr key={prod.id} className="hover:bg-blue-50 transition">
+                  productos.map((prod) => { const rowId = prod._id || prod.id; return (
+                    <tr key={rowId} className="hover:bg-blue-50 transition">
                       <td className="px-4 py-2">{prod.nombre}</td>
                       <td className="px-4 py-2">{prod.stock}</td>
                       <td className="px-4 py-2">${prod.precio?.toFixed(2)}</td>
@@ -307,7 +307,7 @@ export default function Inventario() {
                           onMouseLeave={hideTooltip}
                           onClick={() => {
                             setEditOpen(true);
-                            setEditId(prod.id);
+                            setEditId(rowId);
                             setForm({ nombre: prod.nombre, stock: prod.stock, precio: prod.precio });
                           }}
                         >
@@ -317,7 +317,7 @@ export default function Inventario() {
                           className="text-red-500 hover:underline flex items-center gap-1"
                           onClick={() => {
                             setConfirmOpen(true);
-                            setDeleteId(prod.id);
+                            setDeleteId(rowId);
                           }}
                           onMouseEnter={e => showTooltip('Eliminar', e)}
                           onMouseLeave={hideTooltip}
@@ -336,7 +336,7 @@ export default function Inventario() {
                         )}
                       </td>
                     </tr>
-                  ))
+                  )})
                 )}
               </tbody>
             </table>
