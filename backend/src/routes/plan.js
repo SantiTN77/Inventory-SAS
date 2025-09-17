@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const planController = require('../controllers/planController');
+const { authMiddleware } = require('../controllers/authController');
+const checkPermiso = require('../middlewares/checkPermiso');
 
-// TODO: Proteger con middleware de permisos/roles (solo admin)
-router.get('/', planController.getPlanes);
-router.post('/', planController.createPlan);
-router.put('/:id', planController.updatePlan);
-router.delete('/:id', planController.deletePlan);
+router.get('/', authMiddleware, checkPermiso('planes', 'leer'), planController.getPlanes);
+router.post('/', authMiddleware, checkPermiso('planes', 'crear'), planController.createPlan);
+router.put('/:id', authMiddleware, checkPermiso('planes', 'editar'), planController.updatePlan);
+router.delete('/:id', authMiddleware, checkPermiso('planes', 'eliminar'), planController.deletePlan);
 
 module.exports = router;

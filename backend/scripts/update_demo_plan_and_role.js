@@ -10,7 +10,7 @@ async function main() {
   await mongoose.connect(MONGODB_URI);
 
   // 1. Actualizar plan demo para incluir todos los módulos
-  const modulos = ['inventario', 'categorias', 'contabilidad', 'proveedores', 'reportes', 'roles'];
+  const modulos = ['inventario', 'categorias', 'contabilidad', 'proveedores', 'reportes', 'roles', 'planes', 'usuarios'];
   let plan = await Plan.findOneAndUpdate(
     { nombre: /empresarial/i },
     { $set: { modulos } },

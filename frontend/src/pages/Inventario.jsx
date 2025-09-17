@@ -33,13 +33,17 @@ export default function Inventario() {
           precio: Number(form.precio),
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para crear productos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al crear producto');
       }
       setNotif({ open: true, message: 'Producto agregado con éxito', type: 'success' });
@@ -67,13 +71,17 @@ export default function Inventario() {
           precio: Number(form.precio),
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para editar productos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al editar producto');
       }
       setNotif({ open: true, message: 'Producto editado', type: 'success' });
@@ -100,13 +108,17 @@ export default function Inventario() {
           'Authorization': `Bearer ${token}`,
         },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para eliminar productos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al eliminar producto');
       }
       setNotif({ open: true, message: 'Producto eliminado', type: 'success' });
@@ -140,16 +152,20 @@ export default function Inventario() {
           "Authorization": `Bearer ${token}`,
         },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setError(data.message || 'No tienes permiso para ver el inventario.');
+        setNotif({ open: true, message: data.message || 'Acceso denegado al inventario.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || "Error al obtener productos");
       }
-      const data = await res.json();
       // Acepta tanto array plano como { products: [...] }
       setProductos(Array.isArray(data) ? data : data.products || []);
     } catch (err) {

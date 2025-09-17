@@ -32,16 +32,21 @@ export default function Categorias() {
       const res = await fetch(`${getApiUrl()}/api/categorias`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        const message = data.message || 'No tienes permiso para ver categorías.';
+        setError(message);
+        setNotif({ open: true, message, type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || "Error al obtener categorías");
       }
-      const data = await res.json();
       setCategorias(Array.isArray(data) ? data : data.categorias || data.categories || []);
     } catch (err) {
       setError(err.message || "Error desconocido");
@@ -66,13 +71,17 @@ export default function Categorias() {
         },
         body: JSON.stringify({ nombre: form.nombre }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para crear categorías.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || "Error al crear categoría");
       }
       setNotif({ open: true, message: "Categoría guardada", type: "success" });
@@ -94,13 +103,17 @@ export default function Categorias() {
         },
         body: JSON.stringify({ nombre: form.nombre }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para editar categorías.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || "Error al editar categoría");
       }
       setNotif({ open: true, message: "Categoría editada", type: "success" });
@@ -119,13 +132,17 @@ export default function Categorias() {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para eliminar categorías.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || "Error al eliminar categoría");
       }
       setNotif({ open: true, message: "Categoría eliminada", type: "success" });

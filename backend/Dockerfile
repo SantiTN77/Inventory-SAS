@@ -13,6 +13,6 @@ RUN npm ci --only=production
 COPY . .
 
 # Puerto expuesto (ajusta si es necesario)
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["npm", "start"]

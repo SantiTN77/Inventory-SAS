@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Sidebar from "./components/Sidebar";
@@ -29,21 +29,23 @@ export default function App() {
 function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { token, loading } = useAuth();
+  const location = useLocation();
   // Si está cargando el estado de auth, no renderizar nada
   if (loading) return null;
   const isLoggedIn = !!token;
+  const isLoginRoute = location.pathname === "/login";
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar y header solo si está logueado y no es login */}
-      {isLoggedIn && window.location.pathname !== "/login" && (
+      {isLoggedIn && !isLoginRoute && (
         <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen((v) => !v)} />
       )}
-      <div className={`flex-1 transition-all duration-300 ${isLoggedIn && window.location.pathname !== "/login" && sidebarOpen ? 'ml-64' : 'ml-0'}`}> 
-        {isLoggedIn && window.location.pathname !== "/login" && (
+      <div className={`flex-1 transition-all duration-300 ${isLoggedIn && !isLoginRoute && sidebarOpen ? 'ml-64' : 'ml-0'}`}> 
+        {isLoggedIn && !isLoginRoute && (
           <Header onSidebarToggle={() => setSidebarOpen((v) => !v)} />
         )}
         {/* Botón flotante para mostrar el sidebar si está oculto */}
-        {isLoggedIn && window.location.pathname !== "/login" && !sidebarOpen && (
+        {isLoggedIn && !isLoginRoute && !sidebarOpen && (
           <button
             className="fixed top-4 left-4 z-50 bg-blue-700 text-white p-2 rounded-full shadow-lg hover:bg-blue-800 transition"
             onClick={() => setSidebarOpen(true)}
