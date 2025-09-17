@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import UserMenu from "./UserMenu";
+import { useAuth } from "../context/AuthContext";
 
 function SidebarSection({ title, children }) {
   return (
@@ -21,12 +22,12 @@ import {
   BellIcon,
 } from "@heroicons/react/24/outline";
 
-const mainLinks = [
-  { to: "/", label: "Inicio", icon: HomeIcon },
-  { to: "/inventario", label: "Inventario", icon: ArchiveBoxIcon },
-  { to: "/categorias", label: "Categorías", icon: ArchiveBoxIcon },
-  { to: "/contabilidad", label: "Contabilidad", icon: BanknotesIcon },
-  { to: "/roles", label: "Roles", icon: UserGroupIcon },
+const allMainLinks = [
+  { to: "/", label: "Inicio", icon: HomeIcon, modulo: "inicio" },
+  { to: "/inventario", label: "Inventario", icon: ArchiveBoxIcon, modulo: "inventario" },
+  { to: "/categorias", label: "Categorías", icon: ArchiveBoxIcon, modulo: "categorias" },
+  { to: "/contabilidad", label: "Contabilidad", icon: BanknotesIcon, modulo: "contabilidad" },
+  { to: "/roles", label: "Roles", icon: UserGroupIcon, modulo: "roles" },
 ];
 const analyticsLinks = [
   { to: "/estadisticas", label: "Estadísticas", icon: ChartBarIcon },
@@ -38,6 +39,24 @@ const systemLinks = [
 
 export default function Sidebar({ open, onToggle }) {
   const location = useLocation();
+  const { user } = useAuth();
+  // Mostrar solo los módulos permitidos por tipo de usuario (rol)
+  let modulosPermitidos = allMainLinks;
+  if (user && user.rol && user.rol.nombre) {
+    const rol = user.rol.nombre.toLowerCase();
+    if (rol === "admin" || rol === "administrador" || rol === "superadmin") {
+      modulosPermitidos = allMainLinks;
+    } else if (rol === "contabilidad" || rol === "contable") {
+      modulosPermitidos = allMainLinks.filter(link => ["inicio", "contabilidad"].includes(link.modulo));
+    } else if (rol === "caja" || rol === "punto de venta") {
+      modulosPermitidos = allMainLinks.filter(link => ["inicio", "inventario"].includes(link.modulo));
+    } else if (rol === "usuario" || rol === "basico" || rol === "básico") {
+      modulosPermitidos = allMainLinks.filter(link => ["inicio"].includes(link.modulo));
+    } else {
+      // Por defecto solo inicio
+      modulosPermitidos = allMainLinks.filter(link => ["inicio"].includes(link.modulo));
+    }
+  }
   return (
     <aside
       className={`fixed top-0 left-0 h-full z-40 bg-white shadow-lg border-r border-blue-100 transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "-translate-x-64"} w-64 flex flex-col`}
@@ -53,7 +72,7 @@ export default function Sidebar({ open, onToggle }) {
       </div>
       <nav className="flex-1 flex flex-col gap-2 mt-2 overflow-y-auto">
         <SidebarSection title="General">
-          {mainLinks.map(({ to, label, icon: Icon }) => (
+          {modulosPermitidos.map(({ to, label, icon: Icon }) => (
             <Link
               key={to}
               to={to}

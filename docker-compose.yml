@@ -4,31 +4,37 @@ services:
   backend:
     build:
       context: ./backend
-    ports:
-      - "3000:3000"
     environment:
-      - NODE_ENV=production
-      # Añade otras variables aquí si las necesitas
-      # - DB_HOST=db
-      # - JWT_SECRET=mi_secreto
+      NODE_ENV: production
+      PORT: 4000
+    env_file:
+      - ./backend/.env
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
 
   frontend:
     build:
       context: ./frontend
+    environment:
+      VITE_API_URL: http://backend:4000
     ports:
       - "80:80"
-    environment:
-      - VITE_API_URL=http://localhost:3000  # Punto clave!
     depends_on:
       - backend
 
   # Si necesitas base de datos:
-  # db:
-  #   image: mongo:latest
-  #   volumes:
-  #     - mongodb_data:/data/db
-  #   ports:
-  #     - "27017:27017"
+  db:
+    image: mongo:8
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
 
-# volumes:
-#   mongodb_data:
+volumes:
+  mongodb_data:

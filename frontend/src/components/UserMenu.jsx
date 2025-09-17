@@ -1,9 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { UserCircleIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "../context/AuthContext";
 
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
+  const { user } = useAuth();
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -19,6 +21,9 @@ export default function UserMenu() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
+  // Iniciales del nombre
+  const inicial = user?.nombre ? user.nombre[0].toUpperCase() : 'U';
+  const rol = user?.rol?.nombre || 'Usuario';
   return (
     <div className="relative select-none" ref={menuRef}>
       <button
@@ -29,11 +34,11 @@ export default function UserMenu() {
         title="Menú de usuario"
       >
         <span className="bg-blue-200 text-blue-700 rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold shadow-inner">
-          A
+          {inicial}
         </span>
         <span className="flex flex-col items-start">
-          <span className="font-semibold text-blue-900 leading-tight">Admin</span>
-          <span className="text-xs text-gray-400 leading-tight">Administrador</span>
+          <span className="font-semibold text-blue-900 leading-tight">{user?.nombre || 'Usuario'}</span>
+          <span className="text-xs text-gray-400 leading-tight">{rol.charAt(0).toUpperCase() + rol.slice(1)}</span>
         </span>
         <svg className={`w-5 h-5 ml-auto text-blue-400 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -56,3 +61,4 @@ export default function UserMenu() {
     </div>
   );
 }
+

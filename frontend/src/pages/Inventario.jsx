@@ -33,13 +33,17 @@ export default function Inventario() {
           precio: Number(form.precio),
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para crear productos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al crear producto');
       }
       setNotif({ open: true, message: 'Producto agregado con éxito', type: 'success' });
@@ -67,13 +71,17 @@ export default function Inventario() {
           precio: Number(form.precio),
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para editar productos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al editar producto');
       }
       setNotif({ open: true, message: 'Producto editado', type: 'success' });
@@ -100,13 +108,17 @@ export default function Inventario() {
           'Authorization': `Bearer ${token}`,
         },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para eliminar productos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al eliminar producto');
       }
       setNotif({ open: true, message: 'Producto eliminado', type: 'success' });
@@ -140,16 +152,20 @@ export default function Inventario() {
           "Authorization": `Bearer ${token}`,
         },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setError(data.message || 'No tienes permiso para ver el inventario.');
+        setNotif({ open: true, message: data.message || 'Acceso denegado al inventario.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || "Error al obtener productos");
       }
-      const data = await res.json();
       // Acepta tanto array plano como { products: [...] }
       setProductos(Array.isArray(data) ? data : data.products || []);
     } catch (err) {
@@ -279,8 +295,8 @@ export default function Inventario() {
                 {productos.length === 0 ? (
                   <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-500">No hay productos registrados.</td></tr>
                 ) : (
-                  productos.map((prod) => (
-                    <tr key={prod.id} className="hover:bg-blue-50 transition">
+                  productos.map((prod) => { const rowId = prod._id || prod.id; return (
+                    <tr key={rowId} className="hover:bg-blue-50 transition">
                       <td className="px-4 py-2">{prod.nombre}</td>
                       <td className="px-4 py-2">{prod.stock}</td>
                       <td className="px-4 py-2">${prod.precio?.toFixed(2)}</td>
@@ -291,7 +307,7 @@ export default function Inventario() {
                           onMouseLeave={hideTooltip}
                           onClick={() => {
                             setEditOpen(true);
-                            setEditId(prod.id);
+                            setEditId(rowId);
                             setForm({ nombre: prod.nombre, stock: prod.stock, precio: prod.precio });
                           }}
                         >
@@ -301,7 +317,7 @@ export default function Inventario() {
                           className="text-red-500 hover:underline flex items-center gap-1"
                           onClick={() => {
                             setConfirmOpen(true);
-                            setDeleteId(prod.id);
+                            setDeleteId(rowId);
                           }}
                           onMouseEnter={e => showTooltip('Eliminar', e)}
                           onMouseLeave={hideTooltip}
@@ -320,7 +336,7 @@ export default function Inventario() {
                         )}
                       </td>
                     </tr>
-                  ))
+                  )})
                 )}
               </tbody>
             </table>

@@ -1,4 +1,5 @@
-## Avance y problemas pendientes (08/06/2025)
+---
+applyTo: '## Avance y problemas pendientes (08/06/2025)
 
 - Se implementó lógica de permisos por rol (admin, cajero).
 - El usuario admin funciona correctamente.
@@ -74,7 +75,7 @@ Inventory POS es un sistema profesional de Punto de Venta (POS) orientado a pequ
 
 - El frontend debe implementar un patrón uniforme de manejo de errores y feedback de la API en todas las páginas:
   - Usar el estado `notif` y el componente `Notification` para mostrar mensajes de éxito, error o información.
-  - Ante errores de autenticación (401) se debe limpiar el token y redirigir a login; los 403 deben mostrar "Acceso denegado" sin cerrar la sesión.
+  - Ante errores de autenticación (401/403), limpiar el token y redirigir a login.
   - Mostrar mensajes claros y amigables al usuario, tanto para errores de validación como de backend.
   - Todas las páginas deben tener preparado el patrón, aunque aún no consuman la API, para facilitar futuras integraciones.
   - Ejemplo de uso:
@@ -90,7 +91,6 @@ Inventory POS es un sistema profesional de Punto de Venta (POS) orientado a pequ
 - Antes de hacer stage/commit/push, ejecutar pruebas automáticas o manuales rápidas sobre los endpoints principales del backend y flujos clave del frontend.
 - Documentar en este archivo cualquier preferencia profesional o flujo de trabajo nuevo que el usuario indique.
 - Mantener la estructura de carpetas limpia y evitar carpetas o archivos duplicados/confusos (por ejemplo, no debe haber carpetas `backend/backend`).
-- Nunca subir archivos `.env` ni credenciales reales; usar `.env.example` como guía y crear copias locales ignoradas por git.
 - Los scripts de inicialización de base de datos deben cargar el archivo `.env` de forma robusta, usando rutas absolutas si es necesario.
 - El backend debe validar y mostrar errores claros en consola si faltan variables de entorno críticas.
 - El frontend debe consumir la API usando variables de entorno (`VITE_API_URL`) y centralizar la lógica de fetch en utilidades reutilizables.
@@ -106,3 +106,6 @@ Inventory POS es un sistema profesional de Punto de Venta (POS) orientado a pequ
 
 ---
 Este prompt debe ser usado como contexto inicial si se reinicia el chat o se cambia de agente, para garantizar continuidad y coherencia en el desarrollo del proyecto.
+'
+---
+Coding standards, domain knowledge, and preferences that AI should follow.

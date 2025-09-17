@@ -35,16 +35,21 @@ export default function Contabilidad() {
       const res = await fetch(`${getApiUrl()}/api/movimientos`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        const message = data.message || 'No tienes permiso para ver contabilidad.';
+        setError(message);
+        setNotif({ open: true, message, type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || "Error al obtener movimientos");
       }
-      const data = await res.json();
       setMovimientos(Array.isArray(data) ? data : data.movimientos || []);
     } catch (err) {
       setError(err.message || "Error desconocido");
@@ -76,13 +81,17 @@ export default function Contabilidad() {
           monto: Number(form.monto),
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para crear movimientos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al crear movimiento');
       }
       setNotif({ open: true, message: 'Movimiento guardado', type: 'success' });
@@ -110,13 +119,17 @@ export default function Contabilidad() {
           monto: Number(form.monto),
         }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para editar movimientos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al editar movimiento');
       }
       setNotif({ open: true, message: 'Movimiento editado', type: 'success' });
@@ -137,13 +150,17 @@ export default function Contabilidad() {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        localStorage.removeItem('token');
+        navigate('/login');
+        throw new Error('Sesión expirada. Inicia sesión nuevamente.');
+      }
+      if (res.status === 403) {
+        setNotif({ open: true, message: data.message || 'No tienes permiso para eliminar movimientos.', type: 'error' });
+        return;
+      }
       if (!res.ok) {
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem('token');
-          navigate('/login');
-          throw new Error('Sesión expirada. Inicia sesión nuevamente.');
-        }
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al eliminar movimiento');
       }
       setNotif({ open: true, message: 'Movimiento eliminado', type: 'success' });
@@ -271,8 +288,8 @@ export default function Contabilidad() {
                 {movimientos.length === 0 ? (
                   <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-500">No hay movimientos registrados.</td></tr>
                 ) : (
-                  movimientos.map((mov) => (
-                    <tr key={mov.id} className="hover:bg-green-50 transition">
+                  movimientos.map((mov) => { const rowId = mov._id || mov.id; return (
+                    <tr key={rowId} className="hover:bg-green-50 transition">
                       <td className="px-4 py-2">{mov.descripcion}</td>
                       <td className="px-4 py-2">{mov.tipo}</td>
                       <td className="px-4 py-2">${mov.monto?.toFixed(2)}</td>
@@ -283,7 +300,7 @@ export default function Contabilidad() {
                           onMouseLeave={hideTooltip}
                           onClick={() => {
                             setEditOpen(true);
-                            setEditId(mov.id);
+                            setEditId(rowId);
                             setForm({ descripcion: mov.descripcion, tipo: mov.tipo, monto: mov.monto });
                           }}
                         >
@@ -293,7 +310,7 @@ export default function Contabilidad() {
                           className="text-red-500 hover:underline flex items-center gap-1"
                           onClick={() => {
                             setConfirmOpen(true);
-                            setDeleteId(mov.id);
+                            setDeleteId(rowId);
                           }}
                           onMouseEnter={e => showTooltip('Eliminar', e)}
                           onMouseLeave={hideTooltip}
@@ -312,7 +329,7 @@ export default function Contabilidad() {
                         )}
                       </td>
                     </tr>
-                  ))
+                  )})
                 )}
               </tbody>
             </table>
