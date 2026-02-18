@@ -3,5 +3,24 @@
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "jsonwebtoken": "^9.0.2"
-  }
+  },
+  "name": "inventory-sas",
+  "version": "1.0.0",
+  "description": "Inventory POS está diseñado como una plataforma modular y escalable, capaz de adaptarse a diferentes tipos de clientes y planes comerciales:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SantiTN77/Inventory-SAS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SantiTN77/Inventory-SAS/issues"
+  },
+  "homepage": "https://github.com/SantiTN77/Inventory-SAS#readme"
 }
