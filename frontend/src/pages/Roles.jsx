@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { UserGroupIcon, PlusIcon, TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
 import Notification from "../components/Notification";
-import { useAuth } from "../context/AuthContext";
 import { getApiUrl } from "../utils/api";
 
 const MODULES = [
@@ -16,7 +15,6 @@ const MODULES = [
 const ACTIONS = ['leer', 'crear', 'editar', 'eliminar'];
 
 export default function Roles() {
-  const { token } = useAuth();
   const navigate = useNavigate();
   const [notif, setNotif] = useState({ open: false, message: "", type: "info" });
   const [roles, setRoles] = useState([]);

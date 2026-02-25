@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 import UserMenu from "./UserMenu";
 import { useAuth } from "../context/AuthContext";
@@ -23,7 +24,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 const allMainLinks = [
-  { to: "/", label: "Inicio", icon: HomeIcon, modulo: "inicio" },
+  { to: "/dashboard", label: "Inicio", icon: HomeIcon, modulo: "inicio" },
   { to: "/inventario", label: "Inventario", icon: ArchiveBoxIcon, modulo: "inventario" },
   { to: "/categorias", label: "Categorías", icon: ArchiveBoxIcon, modulo: "categorias" },
   { to: "/contabilidad", label: "Contabilidad", icon: BanknotesIcon, modulo: "contabilidad" },
@@ -72,38 +73,38 @@ export default function Sidebar({ open, onToggle }) {
       </div>
       <nav className="flex-1 flex flex-col gap-2 mt-2 overflow-y-auto">
         <SidebarSection title="General">
-          {modulosPermitidos.map(({ to, label, icon: Icon }) => (
+          {modulosPermitidos.map(({ to, label, icon }) => (
             <Link
               key={to}
               to={to}
               className={`flex items-center gap-3 px-6 py-3 rounded-lg mx-2 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-700 ${location.pathname === to ? "bg-blue-100 text-blue-700 font-bold" : "text-gray-700"}`}
               title={label}
             >
-              <Icon className="h-5 w-5" /> {label}
+              {createElement(icon, { className: "h-5 w-5" })} {label}
             </Link>
           ))}
         </SidebarSection>
         <SidebarSection title="Analítica">
-          {analyticsLinks.map(({ to, label, icon: Icon }) => (
+          {analyticsLinks.map(({ to, label, icon }) => (
             <Link
               key={to}
               to={to}
               className={`flex items-center gap-3 px-6 py-3 rounded-lg mx-2 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-700 ${location.pathname === to ? "bg-blue-100 text-blue-700 font-bold" : "text-gray-700"}`}
               title={label}
             >
-              <Icon className="h-5 w-5" /> {label}
+              {createElement(icon, { className: "h-5 w-5" })} {label}
             </Link>
           ))}
         </SidebarSection>
         <SidebarSection title="Sistema">
-          {systemLinks.map(({ to, label, icon: Icon, badge }) => (
+          {systemLinks.map(({ to, label, icon, badge }) => (
             <Link
               key={to}
               to={to}
               className={`flex items-center gap-3 px-6 py-3 rounded-lg mx-2 font-medium transition-all duration-200 hover:bg-blue-50 hover:text-blue-700 relative ${location.pathname === to ? "bg-blue-100 text-blue-700 font-bold" : "text-gray-700"}`}
               title={label}
             >
-              <Icon className="h-5 w-5" /> {label}
+              {createElement(icon, { className: "h-5 w-5" })} {label}
               {badge && (
                 <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold shadow">{badge}</span>
               )}

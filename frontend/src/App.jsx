@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
+import Landing from "./pages/Landing";
 import Inventario from "./pages/Inventario";
 import Categorias from "./pages/Categorias";
 import Contabilidad from "./pages/Contabilidad";
@@ -33,25 +34,36 @@ function AppLayout() {
   const navigate = useNavigate();
   const isLoggedIn = !!token;
   const isLoginRoute = location.pathname === "/login";
+  const isLandingRoute = location.pathname === "/";
+  const isPublicRoute = isLoginRoute || isLandingRoute;
+
   useEffect(() => {
-    if (!loading && !isLoggedIn && !isLoginRoute) {
-      navigate('/login', { replace: true });
+    if (!loading && !isLoggedIn && !isPublicRoute) {
+      navigate("/login", { replace: true });
+      return;
     }
-  }, [loading, isLoggedIn, isLoginRoute, navigate]);
-  // Si está cargando el estado de auth, no renderizar nada
+
+    if (!loading && isLoggedIn && (isLandingRoute || isLoginRoute)) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [loading, isLoggedIn, isPublicRoute, isLandingRoute, isLoginRoute, navigate]);
+
   if (loading) return null;
+
+  const mostrarEstructuraInterna = isLoggedIn && !isLoginRoute && !isLandingRoute;
+
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      {/* Sidebar y header solo si está logueado y no es login */}
-      {isLoggedIn && !isLoginRoute && (
+    <div className={`min-h-screen ${mostrarEstructuraInterna ? "bg-gray-100 flex" : ""}`}>
+      {mostrarEstructuraInterna && (
         <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen((v) => !v)} />
       )}
-      <div className={`flex-1 transition-all duration-300 ${isLoggedIn && !isLoginRoute && sidebarOpen ? 'ml-64' : 'ml-0'}`}> 
-        {isLoggedIn && !isLoginRoute && (
+
+      <div className={`flex-1 transition-all duration-300 ${mostrarEstructuraInterna && sidebarOpen ? "ml-64" : "ml-0"}`}>
+        {mostrarEstructuraInterna && (
           <Header onSidebarToggle={() => setSidebarOpen((v) => !v)} />
         )}
-        {/* Botón flotante para mostrar el sidebar si está oculto */}
-        {isLoggedIn && !isLoginRoute && !sidebarOpen && (
+
+        {mostrarEstructuraInterna && !sidebarOpen && (
           <button
             className="fixed top-4 left-4 z-50 bg-blue-700 text-white p-2 rounded-full shadow-lg hover:bg-blue-800 transition"
             onClick={() => setSidebarOpen(true)}
@@ -63,9 +75,11 @@ function AppLayout() {
             </svg>
           </button>
         )}
-        <main className="max-w-4xl mx-auto mt-8">
+
+        <main className={mostrarEstructuraInterna ? "max-w-4xl mx-auto mt-8" : "w-full"}>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/dashboard" element={<Home />} />
             <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/inventario" element={<ProtectedRoute modulo="inventario"><Inventario /></ProtectedRoute>} />
             <Route path="/categorias" element={<ProtectedRoute modulo="categorias"><Categorias /></ProtectedRoute>} />

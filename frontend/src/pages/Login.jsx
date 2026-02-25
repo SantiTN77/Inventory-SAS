@@ -29,7 +29,7 @@ export default function Login() {
       if (data.token) {
         login(data.token, data.user);
         setNotif({ open: true, message: "¡Bienvenido!", type: "success" });
-        setTimeout(() => navigate("/"), 1000);
+        setTimeout(() => navigate("/dashboard"), 1000);
       } else {
         setNotif({ open: true, message: "Respuesta inválida del servidor", type: "error" });
       }
