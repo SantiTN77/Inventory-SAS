@@ -1,4 +1,5 @@
 // Controlador de Usuarios para Inventory POS (con roles y planes)
+const bcrypt = require('bcryptjs');
 const User = require('../models/user.mongo');
 const Role = require('../models/role');
 const Plan = require('../models/plan');
@@ -15,7 +16,8 @@ exports.getUsers = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const { nombre, email, password, rol, plan } = req.body;
-    const user = new User({ nombre, email, password, rol, plan });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ nombre, email, password: hashedPassword, rol, plan });
     await user.save();
     res.status(201).json(user);
   } catch (err) {
@@ -25,7 +27,12 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updateData = { ...req.body };
+    // Hash password if it's being updated
+    if (updateData.password) {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
+    }
+    const user = await User.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
     res.json(user);
   } catch (err) {
