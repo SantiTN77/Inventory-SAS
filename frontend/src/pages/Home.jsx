@@ -1,12 +1,10 @@
 
 
-import { useNavigate } from "react-router-dom";
 import DashboardCharts from "../components/DashboardCharts";
 
 
 
 export default function Home() {
-  const navigate = useNavigate();
   // Propuesta inicial de métricas (simuladas)
   const metrics = [
     {

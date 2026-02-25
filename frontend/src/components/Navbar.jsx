@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HomeIcon, ArchiveBoxIcon, UserGroupIcon, BanknotesIcon } from "@heroicons/react/24/solid";
 
@@ -16,13 +17,13 @@ export default function Navbar() {
         <span className="flex items-center gap-2 font-extrabold text-2xl tracking-tight select-none">
           <HomeIcon className="h-7 w-7 animate-pulse text-white drop-shadow" /> Punto SAS
         </span>
-        {navItems.map(({ to, label, icon: Icon }) => (
+        {navItems.map(({ to, label, icon }) => (
           <Link
             key={to}
             to={to}
             className={`flex items-center gap-1 px-3 py-1 rounded-lg font-medium transition-all duration-200 hover:bg-blue-900/40 hover:scale-105 ${location.pathname === to ? "bg-white/20 text-yellow-300 shadow" : "text-white/90"}`}
           >
-            <Icon className="h-5 w-5" /> {label}
+            {createElement(icon, { className: "h-5 w-5" })} {label}
           </Link>
         ))}
       </div>
