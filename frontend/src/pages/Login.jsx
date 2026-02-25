@@ -43,8 +43,9 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="bg-white/90 backdrop-blur-md rounded-3xl shadow-soft p-10 w-full max-w-md border border-primary-100 flex flex-col gap-6">
         <h1 className="text-4xl font-display font-bold text-primary-600 mb-2 text-center drop-shadow">Iniciar Sesión</h1>
         <input
-          type="text"
-          placeholder="Correo o usuario"
+          type="email"
+          placeholder="Correo electrónico"
+          autoComplete="email"
           className="border border-primary-200 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-400 bg-primary-50/40 text-lg"
           value={email}
           onChange={e => setEmail(e.target.value)}

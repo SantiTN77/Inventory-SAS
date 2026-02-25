@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
       descripcion: user.plan.descripcion,
       modulos: user.plan.modulos
     } : null;
-    res.json({ token, user: { id: user._id, nombre: user.nombre, rol, plan } });
+    res.json({ token, user: { id: user._id, nombre: user.nombre, email: user.email, rol, plan } });
   } catch (err) {
     res.status(500).json({ message: 'Error en login', error: err.message });
   }

@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { UserCircleIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -46,16 +47,16 @@ export default function UserMenu() {
       </button>
       {open && (
         <div className="absolute left-0 bottom-12 w-48 bg-white shadow-xl rounded-xl border border-blue-100 py-2 animate-fade-in z-50">
-          <a href="/perfil" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0}>
+          <Link to="/perfil" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0} onClick={() => setOpen(false)}>
             <UserCircleIcon className="w-5 h-5" /> Perfil
-          </a>
-          <a href="/configuracion" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0}>
+          </Link>
+          <Link to="/configuracion" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 transition" tabIndex={0} onClick={() => setOpen(false)}>
             <Cog6ToothIcon className="w-5 h-5" /> Configuración
-          </a>
+          </Link>
           <div className="border-t my-1 border-blue-100" />
-          <a href="/login" className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition" tabIndex={0}>
+          <button onClick={() => { setOpen(false); logout(); }} className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition" tabIndex={0}>
             <ArrowRightOnRectangleIcon className="w-5 h-5" /> Cerrar sesión
-          </a>
+          </button>
         </div>
       )}
     </div>

@@ -33,7 +33,7 @@ const analyticsLinks = [
   { to: "/estadisticas", label: "Estadísticas", icon: ChartBarIcon },
 ];
 const systemLinks = [
-  { to: "/notificaciones", label: "Notificaciones", icon: BellIcon, badge: 2 },
+  { to: "/notificaciones", label: "Notificaciones", icon: BellIcon },
   { to: "/configuracion", label: "Configuración", icon: Cog6ToothIcon },
 ];
 

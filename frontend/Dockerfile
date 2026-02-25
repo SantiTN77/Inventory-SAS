@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build  # Asegúrate que tu frontend tenga script "build"
+RUN npm run build
 
 # Etapa de producción
 FROM nginx:alpine

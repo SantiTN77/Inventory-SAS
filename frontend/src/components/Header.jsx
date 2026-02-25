@@ -25,7 +25,6 @@ export default function Header({ onSidebarToggle }) {
       <div className="flex items-center gap-4">
         <Link to="/notificaciones" className="relative group" title="Notificaciones">
           <BellIcon className="h-6 w-6 text-blue-500 group-hover:text-blue-700 transition" />
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 font-bold shadow">2</span>
         </Link>
         <Link to="/configuracion" className="group" title="Configuración">
           <Cog6ToothIcon className="h-6 w-6 text-blue-400 group-hover:text-blue-700 transition" />
